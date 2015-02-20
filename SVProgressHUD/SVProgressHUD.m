@@ -320,7 +320,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 - (void)updatePosition {
 	
     CGFloat hudWidth = 100.0f;
-    CGFloat hudHeight = 100.0f;
+    CGFloat hudHeight = 200.0f;
     CGFloat stringHeightBuffer = 20.0f;
     CGFloat stringAndContentHeightBuffer = 80.0f;
     
@@ -335,7 +335,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     BOOL progressUsed = (self.progress != SVProgressHUDUndefinedProgress) && (self.progress >= 0.0f);
     
     if(string) {
-        CGSize constraintSize = CGSizeMake(200.0f, 300.0f);
+        CGSize constraintSize = CGSizeMake(200, 600.0f);
         CGRect stringRect;
         if ([string respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
           stringRect = [string boundingRectWithSize:constraintSize
@@ -350,7 +350,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
             else
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated"
-                stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(200.0f, 300.0f)];
+                stringSize = [string sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(220.0f, 400.0f)];
 #pragma clang diagnostic pop
             
             stringRect = CGRectMake(0.0f, 0.0f, stringSize.width, stringSize.height);
@@ -366,7 +366,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         if(stringWidth > hudWidth)
             hudWidth = ceil(stringWidth/2)*2;
         
-        CGFloat labelRectY = (imageUsed || progressUsed) ? 68.0f : 9.0f;
+        CGFloat labelRectY = (imageUsed || progressUsed) ? 90.0f : 9.0f;
         
         if(hudHeight > 100.0f) {
             labelRect = CGRectMake(12.0f, labelRectY, hudWidth, stringHeight);
@@ -377,10 +377,10 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
         }
     }
 	
-	self.hudView.bounds = CGRectMake(0.0f, 0.0f, hudWidth, hudHeight);
+	self.hudView.bounds = CGRectMake(0.0f, 0.0f, hudWidth, hudHeight + 30);
     
     if(string)
-        self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, 36.0f);
+        self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, 50.0f);
 	else
        	self.imageView.center = CGPointMake(CGRectGetWidth(self.hudView.bounds)/2, CGRectGetHeight(self.hudView.bounds)/2);
 	
@@ -730,9 +730,8 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
     
     UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
     UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, string);
-    
-    self.fadeOutTimer = [NSTimer timerWithTimeInterval:duration target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
-    [[NSRunLoop mainRunLoop] addTimer:self.fadeOutTimer forMode:NSRunLoopCommonModes];
+
+    self.fadeOutTimer = nil;
 }
 
 - (void)dismiss {
@@ -942,7 +941,7 @@ static const CGFloat SVProgressHUDUndefinedProgress = -1;
 
 - (UIImageView *)imageView {
     if (!_imageView)
-        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 28.0f, 28.0f)];
+        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 56.0f, 56.0f)];
     
     if(!_imageView.superview)
         [self.hudView addSubview:_imageView];
